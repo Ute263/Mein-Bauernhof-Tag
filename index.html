@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mein Bauernhof – Tierwohl</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Mein Bauernhof</h1>
+        <p id="subtitle">Beobachte genau. Entscheide, was die Tiere brauchen.</p>
+      </div>
+      <button id="restartBtn" class="secondary" type="button">Neu starten</button>
+    </header>
+
+    <section id="modeScreen" class="screen active mode-screen">
+      <div class="mode-copy">
+        <h2>Was möchtest du heute übernehmen?</h2>
+        <p>Starte mit einem Tier oder übernimm die Verantwortung für einen ganzen Stall.</p>
+      </div>
+      <div class="mode-grid">
+        <button id="singleModeBtn" class="mode-card" type="button">
+          <img src="assets/scene-cow-natural.jpg" alt="Eine Kuh auf dem Bauernhof">
+          <span><strong>Ein Tier versorgen</strong><small>Beobachte ein Tier in fünf Situationen.</small></span>
+        </button>
+        <button id="stallModeBtn" class="mode-card mode-card-stall" type="button">
+          <img src="assets/stall-cow.png" alt="Mehrere Kühe in einem Stall">
+          <span><strong>Einen ganzen Stall versorgen</strong><small>Kontrolliere mehrere Bereiche und behalte alle Tiere im Blick.</small></span>
+        </button>
+      </div>
+    </section>
+
+    <section id="startScreen" class="screen">
+      <div class="start-copy">
+        <div>
+          <button class="back-link" id="backToModeFromSingle" type="button">← Zurück</button>
+          <h2>Welches Tier möchtest du versorgen?</h2>
+          <p>Du bist heute Landwirtin oder Landwirt. Schau genau hin und kümmere dich gut um dein Tier.</p>
+        </div>
+        <div class="goal"><strong>Dein Auftrag:</strong><br>Beobachten · überlegen · handeln</div>
+      </div>
+      <div class="animal-grid">
+        <button class="animal-card" data-animal="cow" type="button">
+          <img src="assets/cow-natural-thumb.jpg" alt="Gezeichnete Kuh">
+          <span><strong>Kuh</strong><small>Futter · Wasser · Bewegung · Ruhe</small></span>
+        </button>
+        <button class="animal-card" data-animal="pig" type="button">
+          <img src="assets/pig-natural-thumb.jpg" alt="Gezeichnetes Schwein">
+          <span><strong>Schwein</strong><small>Futter · Wasser · Beschäftigung · sauberer Platz</small></span>
+        </button>
+        <button class="animal-card" data-animal="chicken" type="button">
+          <img src="assets/chicken-natural-thumb.jpg" alt="Gezeichnetes Huhn">
+          <span><strong>Huhn</strong><small>Futter · Wasser · Scharren · sicherer Stall</small></span>
+        </button>
+      </div>
+    </section>
+
+    <section id="stallSelectScreen" class="screen stall-select-screen">
+      <div class="start-copy">
+        <div>
+          <button class="back-link" id="backToModeFromStall" type="button">← Zurück</button>
+          <h2>Welchen Stall möchtest du übernehmen?</h2>
+          <p>Im Stall löst du fünf Aufgaben nacheinander und entscheidest, was die Tiere gerade brauchen.</p>
+        </div>
+        <div class="goal"><strong>Dein Auftrag:</strong><br>anschauen · entscheiden · versorgen</div>
+      </div>
+      <div class="stall-grid">
+        <button class="stall-card" data-stall="cow" type="button"><img src="assets/stall-cow.png" alt="Kuhstall"><strong>Kuhstall</strong><small>5 Aufgaben rund um Futter, Wasser, Pflege und Bewegung</small></button>
+        <button class="stall-card" data-stall="pig" type="button"><img src="assets/stall-pig.png" alt="Schweinestall"><strong>Schweinestall</strong><small>5 Aufgaben rund um Futter, Wasser, Sauberkeit und Beschäftigung</small></button>
+        <button class="stall-card" data-stall="chicken" type="button"><img src="assets/stall-chicken.png" alt="Hühnerstall"><strong>Hühnerstall</strong><small>5 Aufgaben rund um Futter, Wasser, Stall und Sicherheit</small></button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="animal-tabs" aria-label="Gewähltes Tier">
+        <button class="tab" data-tab="cow" type="button"><img src="assets/cow-natural-thumb.jpg" alt=""><span>Kuh</span></button>
+        <button class="tab" data-tab="pig" type="button"><img src="assets/pig-natural-thumb.jpg" alt=""><span>Schwein</span></button>
+        <button class="tab" data-tab="chicken" type="button"><img src="assets/chicken-natural-thumb.jpg" alt=""><span>Huhn</span></button>
+        <div class="day-card"><strong id="dayLabel">Situation 1 von 5</strong><div id="dayDots" class="day-dots" aria-hidden="true"></div></div>
+      </div>
+      <div class="game-layout">
+        <aside class="status-panel">
+          <h2 id="statusTitle">So geht es meinem Tier:</h2>
+          <div class="meter-item"><span>Futter</span><div class="meter"><i id="foodBar"></i></div><b id="foodValue">gut</b></div>
+          <div class="meter-item"><span>Wasser</span><div class="meter"><i id="waterBar"></i></div><b id="waterValue">gut</b></div>
+          <div class="meter-item"><span>Wohlbefinden</span><div class="meter"><i id="wellBar"></i></div><b id="wellValue">gut</b></div>
+          <div class="observe-box"><strong>1. Beobachte</strong><p id="observeText">Was fällt dir an deinem Tier auf?</p></div>
+        </aside>
+        <section class="play-area">
+          <div id="sceneCard" class="scene-card cow-scene">
+            <img id="sceneBg" class="scene-bg" src="assets/scene-cow-natural.jpg" alt="Gezeichneter Bauernhof">
+            <div class="scene-wash"></div><img id="animalPortrait" class="animal-portrait" src="assets/cow-natural-thumb.jpg" alt="Gezeichnete Kuh">
+            <div class="speech"><span id="situationText"></span></div><div class="mood-label" id="moodText"></div>
+          </div>
+          <div class="task-block observation-block"><h2 class="question">Was fällt dir auf?</h2><div id="observationGrid" class="observation-grid"></div></div>
+          <div id="actionBlock" class="task-block action-block locked" aria-disabled="true"><h2 class="question">Was machst du jetzt?</h2><div id="actionGrid" class="action-grid"></div></div>
+          <div class="feedback-row"><div id="feedback" class="feedback" aria-live="assertive">Beobachte zuerst genau.</div><button id="nextBtn" class="primary" type="button" disabled>Weiter</button></div>
+        </section>
+        <aside class="side-panel"><div class="tip-card"><strong>Forscher-Tipp</strong><p>Erst beobachten, dann handeln. Nicht immer ist Futter die Lösung.</p></div><div class="remember-card"><strong>Merke</strong><p>Tiere brauchen Futter und Wasser – aber auch Platz, Ruhe, Sauberkeit, Bewegung, Beschäftigung und gute Pflege.</p></div></aside>
+      </div>
+    </section>
+
+    <section id="stallGameScreen" class="screen stall-game-screen simple-stall-game">
+      <div class="stall-head">
+        <div>
+          <button class="back-link" id="backToStallSelect" type="button">← Anderen Stall wählen</button>
+          <h2 id="stallTitle">Kuhstall</h2>
+          <p id="stallIntro">Du kümmerst dich um den ganzen Stall. Löse fünf Aufgaben nacheinander.</p>
+        </div>
+        <div class="stall-progress"><strong id="stallProgressText">Aufgabe 1 von 5</strong><div id="stallProgressDots" class="stall-progress-dots"></div></div>
+      </div>
+
+      <div class="simple-stall-layout">
+        <div class="stall-image-wrap simple-stall-image">
+          <img id="stallImage" src="assets/stall-cow.png" alt="Kuhstall">
+          <div class="stall-image-label">Schau dir den Stall an.</div>
+        </div>
+
+        <section class="simple-stall-task">
+          <span class="stall-task-kicker" id="stallTaskKicker">Aufgabe 1 von 5</span>
+          <h3 id="stallTaskTitle">Die Kuh hat Durst.</h3>
+          <div class="stall-observation" id="stallObservation">Die Kuh steht an der fast leeren Tränke und sucht weiter nach Wasser.</div>
+          <p class="stall-question">Was machst du?</p>
+          <div id="stallAnswers" class="stall-answers simple-stall-answers"></div>
+          <div id="stallFeedback" class="stall-feedback" aria-live="assertive">Wähle eine Antwort.</div>
+          <button id="nextStallTaskBtn" class="primary stall-next-btn" type="button" disabled>Weiter</button>
+        </section>
+      </div>
+    </section>
+
+    <section id="endScreen" class="screen">
+      <div class="end-card"><img id="endAnimal" src="assets/cow-natural-thumb.jpg" alt=""><h2 id="endTitle"></h2><p id="endText"></p><div id="learningSummary" class="learning-summary"></div><div class="farmer-bridge"><strong>Das gehört zur Arbeit auf dem Bauernhof:</strong><p>Landwirtinnen und Landwirte beobachten ihre Tiere, versorgen sie und achten darauf, dass es ihnen gut geht.</p></div><button id="playAgainBtn" class="primary" type="button">Zur Auswahl</button></div>
+    </section>
+
+    <section id="stallEndScreen" class="screen">
+      <div class="end-card stall-end-card"><img id="stallEndImage" src="assets/stall-cow.png" alt=""><h2 id="stallEndTitle">Stallrunde geschafft!</h2><p id="stallEndText"></p><div id="stallEndSummary" class="learning-summary"></div><div class="farmer-bridge"><strong>Das hast du als Landwirtin oder Landwirt gemacht:</strong><p>Du hast nicht nur ein Tier versorgt, sondern Futter, Wasser, Stall, Verhalten und Wohlbefinden aller Tiere im Blick behalten.</p></div><button id="stallAgainBtn" class="primary" type="button">Anderen Stall übernehmen</button></div>
+    </section>
+  </main>
+<script src="game.js"></script>
+</body>
+</html>
